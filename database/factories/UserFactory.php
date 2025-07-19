@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use Database\Factories\Concerns\RefreshOnCreate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -13,10 +14,12 @@ use Illuminate\Support\Str;
  */
 final class UserFactory extends Factory
 {
+    use RefreshOnCreate;
+
     /**
      * The current password being used by the factory.
      */
-    protected static ?string $password;
+    private static ?string $password = null;
 
     /**
      * Define the model's default state.
@@ -39,7 +42,7 @@ final class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'email_verified_at' => null,
         ]);
     }
